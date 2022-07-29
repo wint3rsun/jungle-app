@@ -1,0 +1,8 @@
+<tr>
+  <th scope="row"><%= image_tag product.image.thumb.url , alt: product.name %></th>
+  <td><%= product.name %></td>
+  <td><%= product.description %></td>
+  <td class="text-center"><%= quantity %></td>
+  <td><%= humanized_money_with_symbol product.price %></td>
+  <td><%= humanized_money_with_symbol total %></td>
+</tr>
