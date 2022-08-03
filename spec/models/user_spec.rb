@@ -109,7 +109,7 @@ RSpec.describe User, type: :model do
       expect(user).to be_invalid
     end
 
-    it 'should nots save if a password and password confirmation match' do
+    it 'should not save if a password and password confirmation match' do
       user = User.new(
         first_name: 'Jane',
         last_name: 'Doe',
@@ -118,6 +118,17 @@ RSpec.describe User, type: :model do
         password_confirmation: 'testing2'
       )
       expect(user.save).to be false
+    end
+
+    it 'should validate that password length is at least 8 characters' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'test',
+        password_confirmation: 'test'
+      )
+      expect(user).to be_invalid
     end
 
   end
