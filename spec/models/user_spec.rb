@@ -132,4 +132,77 @@ RSpec.describe User, type: :model do
     end
 
   end
+
+  describe '.authenticate_with_credentials' do
+    it 'should return an instance of user if successfully authenticated' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'testing',
+        password_confirmation: 'testing'
+      )
+      user.save
+
+      authenticated = User.authenticate_with_credentials('test@testing.ca','testing')
+      expect(authenticated).to eq(user)
+    end
+
+    it 'should successfully authenticate even if email has extra spaces' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'testing',
+        password_confirmation: 'testing'
+      )
+      user.save
+
+      authenticated = User.authenticate_with_credentials(' test@testing.ca  ','testing')
+      expect(authenticated).to eq(user)
+    end
+
+    it 'should successfully authenticate even if regardless of email case' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'testing',
+        password_confirmation: 'testing'
+      )
+      user.save
+
+      authenticated = User.authenticate_with_credentials('test@TESTING.ca','testing')
+      expect(authenticated).to eq(user)
+    end
+
+    it 'should return nil if not successfully authenticated - wrong password' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'testing',
+        password_confirmation: 'testing'
+      )
+      user.save
+
+      authenticated = User.authenticate_with_credentials('test@testing.ca','testin')
+      expect(authenticated).to eq(nil)
+    end
+
+    it 'should return nil if not successfully authenticated - wrong email' do
+      user = User.new(
+        first_name: 'Jane',
+        last_name: 'Doe',
+        email: 'test@testing.ca',
+        password: 'testing',
+        password_confirmation: 'testing'
+      )
+      user.save
+
+      authenticated = User.authenticate_with_credentials('est@testing.ca','testing')
+      expect(authenticated).to eq(nil)
+    end
+
+  end
 end
